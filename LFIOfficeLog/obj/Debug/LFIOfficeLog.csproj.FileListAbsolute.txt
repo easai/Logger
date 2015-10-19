@@ -1,0 +1,9 @@
+c:\users\easai\documents\visual studio 2012\Projects\LFIOfficeLog\LFIOfficeLog\bin\Debug\LFIOfficeLog.exe.config
+c:\users\easai\documents\visual studio 2012\Projects\LFIOfficeLog\LFIOfficeLog\bin\Debug\LFIOfficeLog.exe
+c:\users\easai\documents\visual studio 2012\Projects\LFIOfficeLog\LFIOfficeLog\bin\Debug\LFIOfficeLog.pdb
+c:\users\easai\documents\visual studio 2012\Projects\LFIOfficeLog\LFIOfficeLog\obj\Debug\LFIOfficeLog.csprojResolveAssemblyReference.cache
+c:\users\easai\documents\visual studio 2012\Projects\LFIOfficeLog\LFIOfficeLog\obj\Debug\LFIOfficeLog.Form1.resources
+c:\users\easai\documents\visual studio 2012\Projects\LFIOfficeLog\LFIOfficeLog\obj\Debug\LFIOfficeLog.Properties.Resources.resources
+c:\users\easai\documents\visual studio 2012\Projects\LFIOfficeLog\LFIOfficeLog\obj\Debug\LFIOfficeLog.csproj.GenerateResource.Cache
+c:\users\easai\documents\visual studio 2012\Projects\LFIOfficeLog\LFIOfficeLog\obj\Debug\LFIOfficeLog.exe
+c:\users\easai\documents\visual studio 2012\Projects\LFIOfficeLog\LFIOfficeLog\obj\Debug\LFIOfficeLog.pdb
