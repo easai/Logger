@@ -65,6 +65,15 @@
     </Compile>
     <Compile Include="Entry.cs" />
     <Compile Include="EntryTag.cs" />
+    <Compile Include="ImageBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ImageEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ImageEditor.Designer.cs">
+      <DependentUpon>ImageEditor.cs</DependentUpon>
+    </Compile>
     <Compile Include="LogButton.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -111,6 +120,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="AboutLogger.resx">
       <DependentUpon>AboutLogger.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ImageEditor.resx">
+      <DependentUpon>ImageEditor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="LoggerForm.resx">
       <DependentUpon>LoggerForm.cs</DependentUpon>

@@ -117,24 +117,12 @@ namespace Logger
                         refreshScreen();
                     }
                 };
-                /*
-                editButtonList[index].id = i.Id;
-                editButtonList[index].rtf = i.PhotoData;
-                editButtonList[index].Click += (sender, e) =>
-                {
-                    using (var log = new OfficeLog())
-                    {
-                        var edit = new EditEntry(((LogButton)sender).id, this);
-                        edit.setRtf(((LogButton)sender).rtf);
-
-                        edit.ShowDialog();
-                    }
-                };*/
 
                 Label tb = new Label();
                 tb.Width = 140;
                 tb.Text = i.PhotoTime.ToString();
-                PictureBox pictureBox = new PictureBox();
+                ImageBox pictureBox = new ImageBox(i.Id);
+
                 pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
                 pictureBox.Dock = DockStyle.Bottom;
                 pictureBox.Size = new Size(photoPanel.Width - 30, height - 30);
@@ -143,16 +131,39 @@ namespace Logger
                 {
                     MemoryStream ms = new MemoryStream(buf);
                     pictureBox.Image = Image.FromStream(ms);
+
+                    ContextMenu contextMenu = new ContextMenu();
+                    contextMenu.MenuItems.Add("Delete "+pictureBox.id, new System.EventHandler(deleteImage));
+                    pictureBox.ContextMenu = contextMenu;
+
+                    pictureBox.Click += (sender, e) =>
+                    {
+                        if (((MouseEventArgs)e).Button != MouseButtons.Right)
+                        {
+                            new ImageEditor(pictureBox.Image).Show();
+                        }
+                    };
                 }
-                /*
+                
                 panel.Controls.Add(deleteButtonList[index]);
-                panel.Controls.Add(editButtonList[index]);
-                panel.Controls.Add(tb);
-                 * */
                 panel.Controls.Add(pictureBox);
 
                 photoPanel.Controls.Add(panel);
                 index++;
+            }
+        }
+
+        public void deleteImage(object sender, EventArgs e)
+        {
+            using (var log = new OfficeLog())
+            {
+                MenuItem menuItem = ((MenuItem)sender);
+                string str = menuItem.Text.Substring(7);
+                int index = int.Parse(str);
+                var entry = log.Photos.Single(x => x.Id == index);
+                log.Photos.Remove(entry);
+                log.SaveChanges();
+                refreshScreen();
             }
         }
 
@@ -193,17 +204,12 @@ namespace Logger
 
         private void screenshotToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            this.Hide();
-
+            this.Opacity = 0;
             Bitmap bmp = new Bitmap(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height);
-
             Graphics g = Graphics.FromImage(bmp);
-
             g.CopyFromScreen(new Point(0, 0), new Point(0, 0), bmp.Size);
-
+            this.Opacity = 1.0;
             g.Dispose();
-
-            this.Show();
 
             using (MemoryStream ms = new MemoryStream())
             {
