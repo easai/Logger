@@ -88,36 +88,12 @@ namespace Logger
             this.photoPanel.Controls.Clear();
             var items = from i in db.Photos select i;
             items = items.OrderByDescending(i => i.PhotoTime).Take(5);
-            int height = (int)((this.Height - 130)/4);
-
-            LogButton[] editButtonList = new LogButton[5];
-            LogButton[] deleteButtonList = new LogButton[5];
-            for (int i = 0; i < 5; i++)
-            {
-                editButtonList[i] = new LogButton();
-                editButtonList[i].Text = "&Edit";
-                deleteButtonList[i] = new LogButton();
-                deleteButtonList[i].Text = "&Delete";
-            }
+            int height = (int)((photoPanel.Height - 130) / 4);
+            int width = (int)((photoPanel.Width - 30) / 3);
 
             int index = 0;
             foreach (var i in items)
             {
-                FlowLayoutPanel panel = new FlowLayoutPanel();
-                //panel.FlowDirection = FlowDirection.TopDown;
-                panel.Size = new Size(this.Width, height);
-                deleteButtonList[index].id = i.Id;
-                deleteButtonList[index].Click += (sender, e) =>
-                {
-                    using (var log = new OfficeLog())
-                    {
-                        var entry = log.Photos.Single(x => x.Id == ((LogButton)sender).id);
-                        log.Photos.Remove(entry);
-                        log.SaveChanges();
-                        refreshScreen();
-                    }
-                };
-
                 Label tb = new Label();
                 tb.Width = 140;
                 tb.Text = i.PhotoTime.ToString();
@@ -125,30 +101,28 @@ namespace Logger
 
                 pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
                 pictureBox.Dock = DockStyle.Bottom;
-                pictureBox.Size = new Size(photoPanel.Width - 30, height - 30);
-                byte[] buf=i.PhotoData;
+                pictureBox.Size = new Size(width, height - 30);
+                byte[] buf = i.PhotoData;
                 if (buf != null)
                 {
                     MemoryStream ms = new MemoryStream(buf);
                     pictureBox.Image = Image.FromStream(ms);
 
                     ContextMenu contextMenu = new ContextMenu();
-                    contextMenu.MenuItems.Add("Delete "+pictureBox.id, new System.EventHandler(deleteImage));
+                    contextMenu.MenuItems.Add("Delete " + pictureBox.id, new System.EventHandler(deleteImage));
+                    contextMenu.MenuItems.Add("Edit   " + pictureBox.id, new System.EventHandler(editImage));
+                    contextMenu.MenuItems.Add("Save   " + pictureBox.id, new System.EventHandler(editImage));
                     pictureBox.ContextMenu = contextMenu;
 
                     pictureBox.Click += (sender, e) =>
                     {
                         if (((MouseEventArgs)e).Button != MouseButtons.Right)
                         {
-                            new ImageEditor(pictureBox.Image).Show();
+                            new ImageEditor(pictureBox.id, pictureBox.Image).Show();
                         }
                     };
                 }
-                
-                panel.Controls.Add(deleteButtonList[index]);
-                panel.Controls.Add(pictureBox);
-
-                photoPanel.Controls.Add(panel);
+                photoPanel.Controls.Add(pictureBox);
                 index++;
             }
         }
@@ -163,7 +137,25 @@ namespace Logger
                 var entry = log.Photos.Single(x => x.Id == index);
                 log.Photos.Remove(entry);
                 log.SaveChanges();
-                refreshScreen();
+                setPhotoPanel(log);
+            }
+        }
+
+        public void editImage(object sender, EventArgs e)
+        {
+            using (var log = new OfficeLog())
+            {
+                MenuItem menuItem = ((MenuItem)sender);
+                string str = menuItem.Text.Substring(7);
+                int index = int.Parse(str);
+                var entry = log.Photos.Single(x => x.Id == index);
+                byte[] buf = entry.PhotoData;
+                if (buf != null)
+                {
+                    MemoryStream ms = new MemoryStream(buf);
+                    new ImageEditor(index, Image.FromStream(ms)).Show();
+                }
+                setPhotoPanel(log);
             }
         }
 
@@ -213,9 +205,9 @@ namespace Logger
 
             using (MemoryStream ms = new MemoryStream())
             {
-                bmp.Save(ms, System.Drawing.Imaging.ImageFormat.Bmp);                
+                bmp.Save(ms, System.Drawing.Imaging.ImageFormat.Bmp);
                 byte[] array = ms.ToArray();
-           
+
                 using (var log = new OfficeLog())
                 {
                     var photo = new Photo
@@ -223,10 +215,10 @@ namespace Logger
                         PhotoTime = DateTime.Now,
                         PhotoData = array
                     };
-                    log.Database.Log = Console.WriteLine; 
+                    log.Database.Log = Console.WriteLine;
                     log.Photos.Add(photo);
-                   log.SaveChanges();
-                }     
+                    log.SaveChanges();
+                }
             }
 
             refreshScreen();
