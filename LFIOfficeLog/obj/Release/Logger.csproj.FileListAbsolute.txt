@@ -20,3 +20,4 @@ C:\Users\easai\Documents\Visual Studio 2012\Projects\Logger\LFIOfficeLog\obj\Rel
 C:\Users\easai\Documents\Visual Studio 2012\Projects\Logger\LFIOfficeLog\obj\Release\Logger.Migrations.Nanjing.resources
 C:\Users\easai\Documents\Visual Studio 2012\Projects\Logger\LFIOfficeLog\obj\Release\Logger.Migrations.Rename.resources
 C:\Users\easai\Documents\Visual Studio 2012\Projects\Logger\LFIOfficeLog\obj\Release\Logger.ImageEditor.resources
+C:\Users\easai\Documents\Visual Studio 2012\Projects\Logger\LFIOfficeLog\obj\Release\Logger.LineWidth.resources

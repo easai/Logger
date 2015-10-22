@@ -39,6 +39,7 @@
             this.aboutLFIOfficeLogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.layout = new System.Windows.Forms.FlowLayoutPanel();
             this.photoPanel = new System.Windows.Forms.FlowLayoutPanel();
+            this.clipboardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -59,6 +60,7 @@
             this.newToolStripMenuItem,
             this.refreshToolStripMenuItem,
             this.screenshotToolStripMenuItem,
+            this.clipboardToolStripMenuItem,
             this.quitToolStripMenuItem});
             this.fILEToolStripMenuItem.Name = "fILEToolStripMenuItem";
             this.fILEToolStripMenuItem.Size = new System.Drawing.Size(47, 24);
@@ -67,28 +69,28 @@
             // newToolStripMenuItem
             // 
             this.newToolStripMenuItem.Name = "newToolStripMenuItem";
-            this.newToolStripMenuItem.Size = new System.Drawing.Size(150, 24);
+            this.newToolStripMenuItem.Size = new System.Drawing.Size(182, 24);
             this.newToolStripMenuItem.Text = "&New";
             this.newToolStripMenuItem.Click += new System.EventHandler(this.newToolStripMenuItem_Click);
             // 
             // refreshToolStripMenuItem
             // 
             this.refreshToolStripMenuItem.Name = "refreshToolStripMenuItem";
-            this.refreshToolStripMenuItem.Size = new System.Drawing.Size(150, 24);
+            this.refreshToolStripMenuItem.Size = new System.Drawing.Size(182, 24);
             this.refreshToolStripMenuItem.Text = "&Refresh";
             this.refreshToolStripMenuItem.Click += new System.EventHandler(this.refreshToolStripMenuItem_Click);
             // 
             // screenshotToolStripMenuItem
             // 
             this.screenshotToolStripMenuItem.Name = "screenshotToolStripMenuItem";
-            this.screenshotToolStripMenuItem.Size = new System.Drawing.Size(150, 24);
+            this.screenshotToolStripMenuItem.Size = new System.Drawing.Size(182, 24);
             this.screenshotToolStripMenuItem.Text = "&Screenshot";
             this.screenshotToolStripMenuItem.Click += new System.EventHandler(this.screenshotToolStripMenuItem_Click);
             // 
             // quitToolStripMenuItem
             // 
             this.quitToolStripMenuItem.Name = "quitToolStripMenuItem";
-            this.quitToolStripMenuItem.Size = new System.Drawing.Size(150, 24);
+            this.quitToolStripMenuItem.Size = new System.Drawing.Size(182, 24);
             this.quitToolStripMenuItem.Text = "&Quit";
             this.quitToolStripMenuItem.Click += new System.EventHandler(this.quitToolStripMenuItem_Click);
             // 
@@ -125,6 +127,13 @@
             this.photoPanel.Size = new System.Drawing.Size(559, 640);
             this.photoPanel.TabIndex = 0;
             // 
+            // clipboardToolStripMenuItem
+            // 
+            this.clipboardToolStripMenuItem.Name = "clipboardToolStripMenuItem";
+            this.clipboardToolStripMenuItem.Size = new System.Drawing.Size(182, 24);
+            this.clipboardToolStripMenuItem.Text = "From &Clipboard";
+            this.clipboardToolStripMenuItem.Click += new System.EventHandler(this.clipboardToolStripMenuItem_Click);
+            // 
             // LoggerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -157,6 +166,7 @@
         private System.Windows.Forms.ToolStripMenuItem refreshToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem screenshotToolStripMenuItem;
         private System.Windows.Forms.FlowLayoutPanel photoPanel;
+        private System.Windows.Forms.ToolStripMenuItem clipboardToolStripMenuItem;
     }
 }
 

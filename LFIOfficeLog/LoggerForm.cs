@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.Linq;
 using System.IO;
+using System.Globalization;
 
 namespace Logger
 {
@@ -111,7 +112,7 @@ namespace Logger
                     ContextMenu contextMenu = new ContextMenu();
                     contextMenu.MenuItems.Add("Delete " + pictureBox.id, new System.EventHandler(deleteImage));
                     contextMenu.MenuItems.Add("Edit   " + pictureBox.id, new System.EventHandler(editImage));
-                    contextMenu.MenuItems.Add("Save   " + pictureBox.id, new System.EventHandler(editImage));
+                    contextMenu.MenuItems.Add("Save   " + pictureBox.id, new System.EventHandler(saveImage));
                     pictureBox.ContextMenu = contextMenu;
 
                     pictureBox.Click += (sender, e) =>
@@ -159,6 +160,45 @@ namespace Logger
             }
         }
 
+        public void saveImage(object sender, EventArgs e)
+        {
+            SaveFileDialog fileDialog = new SaveFileDialog { };
+            if (fileDialog.ShowDialog() != System.Windows.Forms.DialogResult.Cancel)
+            {
+                string fileName = fileDialog.FileName;
+                using (var log = new OfficeLog())
+                {
+                    MenuItem menuItem = ((MenuItem)sender);
+                    string str = menuItem.Text.Substring(7);
+                    int index = int.Parse(str);
+                    var entry = log.Photos.Single(x => x.Id == index);
+                    byte[] buf = entry.PhotoData;
+                    if (buf != null)
+                    {
+                        MemoryStream ms = new MemoryStream(buf);
+                        Image image = Image.FromStream(ms);
+                        
+                        if (fileName.EndsWith(".jpg", true, CultureInfo.CurrentCulture))
+                        {
+                            image.Save(fileName, System.Drawing.Imaging.ImageFormat.Jpeg);
+                        }
+                        else if (fileName.EndsWith(".bmp", true, CultureInfo.CurrentCulture))
+                        {
+                            image.Save(fileName, System.Drawing.Imaging.ImageFormat.Bmp);
+                        }
+                        else if (fileName.EndsWith(".png", true, CultureInfo.CurrentCulture))
+                        {
+                            image.Save(fileName, System.Drawing.Imaging.ImageFormat.Png);
+                        }
+                        else
+                        {
+                            image.Save(fileName + ".png", System.Drawing.Imaging.ImageFormat.Png);
+                        }
+                    }
+                }
+            } 
+        }
+
         public void refreshScreen()
         {
             using (var db = new OfficeLog())
@@ -203,6 +243,28 @@ namespace Logger
             this.Opacity = 1.0;
             g.Dispose();
 
+            saveBitmap(bmp);
+
+            refreshScreen();
+        }
+
+        private void clipboardToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Image image=Clipboard.GetImage();
+            if(image==null)
+                return;
+            Bitmap bmp = new Bitmap(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height);
+            Graphics g = Graphics.FromImage(bmp);
+            g.DrawImage(image,0,0);
+            g.Dispose();
+
+            saveBitmap(bmp);
+
+            refreshScreen();
+        }
+
+        private void saveBitmap(Bitmap bmp)
+        {
             using (MemoryStream ms = new MemoryStream())
             {
                 bmp.Save(ms, System.Drawing.Imaging.ImageFormat.Bmp);
@@ -220,8 +282,6 @@ namespace Logger
                     log.SaveChanges();
                 }
             }
-
-            refreshScreen();
         }
     }
 }
