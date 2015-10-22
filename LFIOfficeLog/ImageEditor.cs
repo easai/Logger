@@ -84,10 +84,11 @@ namespace Logger
                 textBox.Hide();
                 pictureBox.Refresh();
             }
-
+            bool moved = false;
             switch (mode)
             {
                 case Mode.SELECT:
+                   
                     for (int i = 0; i < list.Count(); i++)
                     {
                         if (list[i].Contains(pos))
@@ -98,18 +99,23 @@ namespace Logger
                                 list[i].rect.Width,
                                 list[i].rect.Height);
                             rect.width = list[i].width;
+                            rect.color = list[i].color;
                             list.Remove(list[i]);
                             list.Add(rect);
+                            moved = true;
                         }
                     }
-                    for (int i = 0; i < textList.Count(); i++)
+                    if (!moved)
                     {
-                        SizeF sizeF = pictureBox.CreateGraphics().MeasureString(textList[i].text, textList[i].font);
-                        Rectangle rb = new Rectangle(textList[i].pos.X, textList[i].pos.Y, (int)sizeF.Width, (int)sizeF.Height);
-                        if (rb.Contains(pos))
+                        for (int i = 0; i < textList.Count(); i++)
                         {
-                            textList[i].pos.X += e.Location.X - pos.X;
-                            textList[i].pos.Y += e.Location.Y - pos.Y;
+                            SizeF sizeF = pictureBox.CreateGraphics().MeasureString(textList[i].text, textList[i].font);
+                            Rectangle rb = new Rectangle(textList[i].pos.X, textList[i].pos.Y, (int)sizeF.Width, (int)sizeF.Height);
+                            if (rb.Contains(pos))
+                            {
+                                textList[i].pos.X += e.Location.X - pos.X;
+                                textList[i].pos.Y += e.Location.Y - pos.Y;
+                            }
                         }
                     }
                     break;
@@ -267,6 +273,7 @@ namespace Logger
         private void lineColorToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ColorDialog dialog = new ColorDialog();
+            dialog.Color = lineColor;
             if (dialog.ShowDialog() == DialogResult.OK)
             {
                 lineColor = dialog.Color;
@@ -276,6 +283,7 @@ namespace Logger
         private void fontColorToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ColorDialog dialog = new ColorDialog();
+            dialog.Color = fontColor;
             if (dialog.ShowDialog() == DialogResult.OK)
             {
                 fontColor = dialog.Color;
@@ -285,6 +293,7 @@ namespace Logger
         private void fontToolStripMenuItem_Click(object sender, EventArgs e)
         {
             FontDialog dialog = new FontDialog();
+            dialog.Font = font;
             if (dialog.ShowDialog() == DialogResult.OK)
             {
                 font = dialog.Font;
