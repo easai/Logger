@@ -64,17 +64,30 @@ namespace Logger
                 g.DrawRectangle(pen, rect);
             }
         }
-        private void draw(Graphics g, float fx, float fy)
+
+        private void drawOnImage(Graphics g)
         {
             Pen pen = new Pen(Color.Red);
-            g.DrawRectangle(new Pen(Color.Green), new Rectangle(0, 0, 100, 100));
             foreach (Rectangle rect in list)
             {
+                float f = 1.0f;
+                Point r0;
+                if (pictureBox.Width * image.Height < image.Width * pictureBox.Height)
+                {
+                    f = (float)image.Width / pictureBox.Width;
+                    r0 = new Point(0, (int)((pictureBox.Height - image.Height/f) * .5));
+                }
+                else
+                {
+                    f = (float)image.Height / pictureBox.Height;
+                    r0 = new Point((int)((pictureBox.Width - image.Width/f) * .5), 0);
+                }
+
                 Rectangle r = new Rectangle();
-                r.X = (int)(rect.X * fx);
-                r.Y = (int)(rect.Y * fy);
-                r.Width = (int)(rect.Width * fx);
-                r.Height = (int)(rect.Height * fy);
+                r.X = (int)((rect.X-r0.X) * f);
+                r.Y = (int)((rect.Y-r0.Y) * f);
+                r.Width = (int)(rect.Width * f);
+                r.Height = (int)(rect.Height * f);
                 g.DrawRectangle(pen, r);
             }
         }
@@ -89,9 +102,9 @@ namespace Logger
             using (MemoryStream ms = new MemoryStream())
             {
 
-                float fx = (float)pictureBox.Image.Width / (pictureBox.Width);
-                float fy = ((float)pictureBox.Image.Height) / pictureBox.Height;
-                draw(Graphics.FromImage(image), fx, fy);
+                float fx = (float)pictureBox.Image.Width / pictureBox.Width;
+                float fy = (float)pictureBox.Image.Height / pictureBox.Height;
+                drawOnImage(Graphics.FromImage(image));
 
                 pictureBox.Image.Save(ms, System.Drawing.Imaging.ImageFormat.Bmp);
                 byte[] array = ms.ToArray();
