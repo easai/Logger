@@ -17,7 +17,7 @@ namespace Logger
         {
             this.imageEditor = imageEditor;
             InitializeComponent();
-            widthUpDown.Value = imageEditor.lineWidth;
+            widthUpDown.Value = (int)imageEditor.pen.Width;
         }
 
         private void cancelButton_Click(object sender, EventArgs e)
@@ -30,7 +30,7 @@ namespace Logger
             int w = (int)widthUpDown.Value;
             if (w == 0)
                 w = 1;
-            imageEditor.lineWidth = w;
+            imageEditor.pen.Width = w;
             Close();
         }
     }

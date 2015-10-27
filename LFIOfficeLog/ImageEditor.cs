@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Logger
@@ -17,16 +14,15 @@ namespace Logger
         Image image;
         Point pos;
         int id;
-        List<RectangleObject> list = new List<RectangleObject>();
-        enum Mode { SELECT, DRAW, TEXT };
+        List<PolygonObject> polygonList = new List<PolygonObject>();
+        enum Mode { SELECT, DRAW, TEXT, LINE };
         Mode mode;
         List<TextObject> textList = new List<TextObject>();
         RichTextBox textBox = new RichTextBox();
-        public int lineWidth = 1;
-        public Color lineColor = Color.SteelBlue;
         public Font font = new Font("Segoe UI", 16);
         public Color fontColor = Color.SteelBlue;
-
+        public Pen pen=new Pen(Color.SteelBlue);
+        
         public ImageEditor(int id, Image image)
         {
             this.id = id;
@@ -49,6 +45,7 @@ namespace Logger
             selectButton.Checked = false;
             shapeButton.Checked = false;
             textButton.Checked = false;
+            lineButton.Checked = false;
             switch (mode)
             {
                 case Mode.SELECT:
@@ -59,6 +56,9 @@ namespace Logger
                     break;
                 case Mode.TEXT:
                     textButton.Checked = true;
+                    break;
+                case Mode.LINE:
+                    lineButton.Checked = true;
                     break;
             }
         }
@@ -89,19 +89,15 @@ namespace Logger
             {
                 case Mode.SELECT:
                    
-                    for (int i = 0; i < list.Count(); i++)
+                    for (int i = 0; i < polygonList.Count(); i++)
                     {
-                        if (list[i].Contains(pos))
+                        GraphicsPath path = new GraphicsPath();
+                        path.AddPolygon(polygonList[i].list.ToArray());
+                        Region region = new Region(path);
+                        
+                        if (region.GetBounds(CreateGraphics()).Contains(pos))
                         {
-                            RectangleObject rect = new RectangleObject(
-                                list[i].rect.X + e.Location.X - pos.X,
-                                list[i].rect.Y + e.Location.Y - pos.Y,
-                                list[i].rect.Width,
-                                list[i].rect.Height);
-                            rect.width = list[i].width;
-                            rect.color = list[i].color;
-                            list.Remove(list[i]);
-                            list.Add(rect);
+                            polygonList[i].shift(e.Location.X - pos.X, e.Location.Y - pos.Y);
                             moved = true;
                         }
                     }
@@ -120,11 +116,10 @@ namespace Logger
                     }
                     break;
                 case Mode.DRAW:
-                    Size size = new Size(e.X - pos.X, e.Y - pos.Y);
-                    RectangleObject r = new RectangleObject(pos, size);
-                    r.width = lineWidth;
-                    r.color = lineColor;
-                    list.Add(r);
+                    PolygonObject poly = new PolygonObject();
+                    poly.rectangle(pos, e.Location);
+                    poly.setPen(pen);
+                    polygonList.Add(poly);
                     break;
                 case Mode.TEXT:
                     if (!textBox.Visible)
@@ -132,6 +127,13 @@ namespace Logger
                         textBox.Location = e.Location;
                         textBox.Show();
                     }
+                    break;
+                case Mode.LINE:
+                    PolygonObject polygon = new PolygonObject();
+                    polygon.addPoint(pos);
+                    polygon.addPoint(e.Location);
+                    polygon.setPen(pen);
+                    polygonList.Add(polygon);
                     break;
             }
             Refresh();
@@ -145,17 +147,15 @@ namespace Logger
 
         private void draw(Graphics g)
         {
-            foreach (RectangleObject r in list)
-            {
-                Pen pen = new Pen(r.color);
-                pen.Width = r.width;
-                g.DrawRectangle(pen, r.rect);
-            }
             foreach (TextObject text in textList)
             {
                 Brush brush = new SolidBrush(text.color);
                 g.DrawString(text.text, text.font, (Brush)brush, text.pos);
 
+            }
+            foreach (PolygonObject polygon in polygonList)
+            {
+                g.DrawPolygon(polygon.pen, polygon.list.ToArray());
             }
         }
 
@@ -174,16 +174,9 @@ namespace Logger
                 r0 = new Point((int)((pictureBox.Width - image.Width / f) * .5), 0);
             }
 
-            foreach (RectangleObject ro in list)
+            foreach (PolygonObject polygon in polygonList)
             {
-                Pen pen = new Pen(ro.color);
-                Rectangle r = new Rectangle();
-                r.X = (int)((ro.rect.X - r0.X) * f);
-                r.Y = (int)((ro.rect.Y - r0.Y) * f);
-                r.Width = (int)(ro.rect.Width * f);
-                r.Height = (int)(ro.rect.Height * f);
-                pen.Width = ro.width;
-                g.DrawRectangle(pen, r);
+                g.DrawPolygon(polygon.pen, polygon.scale(f));
             }
             foreach (TextObject text in textList)
             {
@@ -265,19 +258,10 @@ namespace Logger
             setMode();
         }
 
-        private void lineWidthToolStripMenuItem_Click(object sender, EventArgs e)
+        private void toolStripButton1_Click(object sender, EventArgs e)
         {
-            new LineWidth(this).ShowDialog();
-        }
-
-        private void lineColorToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            ColorDialog dialog = new ColorDialog();
-            dialog.Color = lineColor;
-            if (dialog.ShowDialog() == DialogResult.OK)
-            {
-                lineColor = dialog.Color;
-            }
+            mode = Mode.LINE;
+            setMode();
         }
 
         private void fontColorToolStripMenuItem_Click(object sender, EventArgs e)
@@ -298,6 +282,21 @@ namespace Logger
             {
                 font = dialog.Font;
             }
+        }
+
+        private void lineColorToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            ColorDialog dialog = new ColorDialog();
+            dialog.Color = pen.Color;
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                pen.Color = dialog.Color;
+            }
+        }
+
+        private void lineWdithToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            new LineWidth(this).ShowDialog();
         }
 
     }

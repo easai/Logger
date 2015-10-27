@@ -36,14 +36,15 @@
             this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.quitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.eDITToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.lineWidthToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.lineColorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fontToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fontColorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.lineWdithToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.lineColorToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip = new System.Windows.Forms.ToolStrip();
             this.selectButton = new System.Windows.Forms.ToolStripButton();
             this.shapeButton = new System.Windows.Forms.ToolStripButton();
             this.textButton = new System.Windows.Forms.ToolStripButton();
+            this.lineButton = new System.Windows.Forms.ToolStripButton();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.toolStrip.SuspendLayout();
@@ -51,6 +52,7 @@
             // 
             // pictureBox
             // 
+            this.pictureBox.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.pictureBox.Dock = System.Windows.Forms.DockStyle.Right;
             this.pictureBox.Location = new System.Drawing.Point(56, 28);
             this.pictureBox.Name = "pictureBox";
@@ -107,27 +109,13 @@
             // eDITToolStripMenuItem
             // 
             this.eDITToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.lineWidthToolStripMenuItem,
-            this.lineColorToolStripMenuItem,
             this.fontToolStripMenuItem,
-            this.fontColorToolStripMenuItem});
+            this.fontColorToolStripMenuItem,
+            this.lineWdithToolStripMenuItem,
+            this.lineColorToolStripMenuItem1});
             this.eDITToolStripMenuItem.Name = "eDITToolStripMenuItem";
             this.eDITToolStripMenuItem.Size = new System.Drawing.Size(52, 24);
             this.eDITToolStripMenuItem.Text = "&EDIT";
-            // 
-            // lineWidthToolStripMenuItem
-            // 
-            this.lineWidthToolStripMenuItem.Name = "lineWidthToolStripMenuItem";
-            this.lineWidthToolStripMenuItem.Size = new System.Drawing.Size(152, 24);
-            this.lineWidthToolStripMenuItem.Text = "&Line width";
-            this.lineWidthToolStripMenuItem.Click += new System.EventHandler(this.lineWidthToolStripMenuItem_Click);
-            // 
-            // lineColorToolStripMenuItem
-            // 
-            this.lineColorToolStripMenuItem.Name = "lineColorToolStripMenuItem";
-            this.lineColorToolStripMenuItem.Size = new System.Drawing.Size(152, 24);
-            this.lineColorToolStripMenuItem.Text = "Line &color";
-            this.lineColorToolStripMenuItem.Click += new System.EventHandler(this.lineColorToolStripMenuItem_Click);
             // 
             // fontToolStripMenuItem
             // 
@@ -143,6 +131,20 @@
             this.fontColorToolStripMenuItem.Text = "Fon&t color";
             this.fontColorToolStripMenuItem.Click += new System.EventHandler(this.fontColorToolStripMenuItem_Click);
             // 
+            // lineWdithToolStripMenuItem
+            // 
+            this.lineWdithToolStripMenuItem.Name = "lineWdithToolStripMenuItem";
+            this.lineWdithToolStripMenuItem.Size = new System.Drawing.Size(152, 24);
+            this.lineWdithToolStripMenuItem.Text = "&Line wdith";
+            this.lineWdithToolStripMenuItem.Click += new System.EventHandler(this.lineWdithToolStripMenuItem_Click);
+            // 
+            // lineColorToolStripMenuItem1
+            // 
+            this.lineColorToolStripMenuItem1.Name = "lineColorToolStripMenuItem1";
+            this.lineColorToolStripMenuItem1.Size = new System.Drawing.Size(152, 24);
+            this.lineColorToolStripMenuItem1.Text = "Line co&lor";
+            this.lineColorToolStripMenuItem1.Click += new System.EventHandler(this.lineColorToolStripMenuItem1_Click);
+            // 
             // toolStrip
             // 
             this.toolStrip.Dock = System.Windows.Forms.DockStyle.Left;
@@ -150,10 +152,11 @@
             this.toolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.selectButton,
             this.shapeButton,
-            this.textButton});
+            this.textButton,
+            this.lineButton});
             this.toolStrip.Location = new System.Drawing.Point(0, 28);
             this.toolStrip.Name = "toolStrip";
-            this.toolStrip.Size = new System.Drawing.Size(57, 635);
+            this.toolStrip.Size = new System.Drawing.Size(63, 635);
             this.toolStrip.TabIndex = 0;
             this.toolStrip.Text = "toolStrip";
             this.toolStrip.UseWaitCursor = true;
@@ -196,6 +199,16 @@
             this.textButton.Size = new System.Drawing.Size(56, 56);
             this.textButton.Click += new System.EventHandler(this.textButton_Click);
             // 
+            // lineButton
+            // 
+            this.lineButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.lineButton.Image = ((System.Drawing.Image)(resources.GetObject("lineButton.Image")));
+            this.lineButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.lineButton.Name = "lineButton";
+            this.lineButton.Padding = new System.Windows.Forms.Padding(5);
+            this.lineButton.Size = new System.Drawing.Size(60, 62);
+            this.lineButton.Click += new System.EventHandler(this.toolStripButton1_Click);
+            // 
             // ImageEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -230,9 +243,10 @@
         private System.Windows.Forms.ToolStripButton shapeButton;
         private System.Windows.Forms.ToolStripButton textButton;
         private System.Windows.Forms.ToolStripMenuItem eDITToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem lineWidthToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem lineColorToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem fontToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem fontColorToolStripMenuItem;
+        private System.Windows.Forms.ToolStripButton lineButton;
+        private System.Windows.Forms.ToolStripMenuItem lineWdithToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem lineColorToolStripMenuItem1;
     }
 }
