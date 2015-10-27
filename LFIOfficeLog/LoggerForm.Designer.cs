@@ -34,12 +34,12 @@
             this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.refreshToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.screenshotToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.clipboardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.quitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.hELPToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutLFIOfficeLogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.layout = new System.Windows.Forms.FlowLayoutPanel();
             this.photoPanel = new System.Windows.Forms.FlowLayoutPanel();
-            this.clipboardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -87,6 +87,13 @@
             this.screenshotToolStripMenuItem.Text = "&Screenshot";
             this.screenshotToolStripMenuItem.Click += new System.EventHandler(this.screenshotToolStripMenuItem_Click);
             // 
+            // clipboardToolStripMenuItem
+            // 
+            this.clipboardToolStripMenuItem.Name = "clipboardToolStripMenuItem";
+            this.clipboardToolStripMenuItem.Size = new System.Drawing.Size(182, 24);
+            this.clipboardToolStripMenuItem.Text = "From &Clipboard";
+            this.clipboardToolStripMenuItem.Click += new System.EventHandler(this.clipboardToolStripMenuItem_Click);
+            // 
             // quitToolStripMenuItem
             // 
             this.quitToolStripMenuItem.Name = "quitToolStripMenuItem";
@@ -127,17 +134,11 @@
             this.photoPanel.Size = new System.Drawing.Size(559, 640);
             this.photoPanel.TabIndex = 0;
             // 
-            // clipboardToolStripMenuItem
-            // 
-            this.clipboardToolStripMenuItem.Name = "clipboardToolStripMenuItem";
-            this.clipboardToolStripMenuItem.Size = new System.Drawing.Size(182, 24);
-            this.clipboardToolStripMenuItem.Text = "From &Clipboard";
-            this.clipboardToolStripMenuItem.Click += new System.EventHandler(this.clipboardToolStripMenuItem_Click);
-            // 
             // LoggerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.ClientSize = new System.Drawing.Size(1240, 668);
             this.Controls.Add(this.photoPanel);
             this.Controls.Add(this.layout);

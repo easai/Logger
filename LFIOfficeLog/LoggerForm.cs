@@ -63,21 +63,31 @@ namespace Logger
                 Label tb = new Label();
                 tb.Width = 140;
                 tb.Text = i.LogDate.ToString();
-                RichTextBox rtb = new RichTextBox();
-                rtb.Dock = DockStyle.Bottom;
-                rtb.Size = new Size(this.Width - 30, height - 30);
+                RichTextBox richTextBox = new RichTextBox();
+                richTextBox.Dock = DockStyle.Bottom;
+                richTextBox.Size = new Size(this.Width - 30, height - 30);
+                richTextBox.ReadOnly = true;
+                richTextBox.BorderStyle = BorderStyle.None;
+                richTextBox.BackColor = Color.White;
                 try
                 {
-                    rtb.Rtf = i.LogText;
+                    richTextBox.Rtf = i.LogText;
                 }
                 catch (Exception)
                 {
-                    rtb.Text += i.LogText;
+                    richTextBox.Text += i.LogText;
                 }
+                using (Graphics g = CreateGraphics())
+                {
+                    richTextBox.Height = (int)g.MeasureString(richTextBox.Text,
+                        richTextBox.Font, richTextBox.Width).Height;
+                    panel.Height = Math.Min(height,richTextBox.Height + 30);
+                }
+
                 panel.Controls.Add(deleteButtonList[index]);
                 panel.Controls.Add(editButtonList[index]);
                 panel.Controls.Add(tb);
-                panel.Controls.Add(rtb);
+                panel.Controls.Add(richTextBox);
 
                 layout.Controls.Add(panel);
                 index++;

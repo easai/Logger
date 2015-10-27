@@ -12,7 +12,8 @@ namespace Logger
     public partial class ImageEditor : Form
     {
         Image image;
-        Point pos;
+        Point startPoint;
+        Point currentPoint;
         int id;
         List<PolygonObject> polygonList = new List<PolygonObject>();
         enum Mode { SELECT, DRAW, TEXT, LINE };
@@ -21,8 +22,8 @@ namespace Logger
         RichTextBox textBox = new RichTextBox();
         public Font font = new Font("Segoe UI", 16);
         public Color fontColor = Color.SteelBlue;
-        public Pen pen=new Pen(Color.SteelBlue);
-        
+        public Pen pen = new Pen(Color.SteelBlue);
+
         public ImageEditor(int id, Image image)
         {
             this.id = id;
@@ -61,6 +62,23 @@ namespace Logger
                     lineButton.Checked = true;
                     break;
             }
+            textBoxOffFocused();
+        }
+
+        private void textBoxOffFocused()
+        {
+            if (textBox.Visible)
+            {
+                if (!textBox.Text.Equals(""))
+                {
+                    TextObject textObject = new TextObject(textBox.Location, textBox.Text, font);
+                    textObject.color = fontColor;
+                    textList.Add(textObject);
+                    textBox.Clear();
+                }
+                textBox.Hide();
+                pictureBox.Refresh();
+            }
         }
 
         private void quitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -70,34 +88,26 @@ namespace Logger
 
         private void pictureBox_MouseDown(object sender, MouseEventArgs e)
         {
-            pos = e.Location;
+            startPoint = e.Location;
         }
 
         private void pictureBox_MouseUp(object sender, MouseEventArgs e)
         {
-            if (textBox.Visible)
-            {
-                TextObject textObject = new TextObject(textBox.Location, textBox.Text, font);
-                textObject.color = fontColor;
-                textList.Add(textObject);
-                textBox.Clear();
-                textBox.Hide();
-                pictureBox.Refresh();
-            }
+            textBoxOffFocused();
             bool moved = false;
             switch (mode)
             {
                 case Mode.SELECT:
-                   
+
                     for (int i = 0; i < polygonList.Count(); i++)
                     {
                         GraphicsPath path = new GraphicsPath();
                         path.AddPolygon(polygonList[i].list.ToArray());
                         Region region = new Region(path);
-                        
-                        if (region.GetBounds(CreateGraphics()).Contains(pos))
+
+                        if (region.GetBounds(CreateGraphics()).Contains(startPoint))
                         {
-                            polygonList[i].shift(e.Location.X - pos.X, e.Location.Y - pos.Y);
+                            polygonList[i].shift(e.Location.X - startPoint.X, e.Location.Y - startPoint.Y);
                             moved = true;
                         }
                     }
@@ -107,17 +117,17 @@ namespace Logger
                         {
                             SizeF sizeF = pictureBox.CreateGraphics().MeasureString(textList[i].text, textList[i].font);
                             Rectangle rb = new Rectangle(textList[i].pos.X, textList[i].pos.Y, (int)sizeF.Width, (int)sizeF.Height);
-                            if (rb.Contains(pos))
+                            if (rb.Contains(startPoint))
                             {
-                                textList[i].pos.X += e.Location.X - pos.X;
-                                textList[i].pos.Y += e.Location.Y - pos.Y;
+                                textList[i].pos.X += e.Location.X - startPoint.X;
+                                textList[i].pos.Y += e.Location.Y - startPoint.Y;
                             }
                         }
                     }
                     break;
                 case Mode.DRAW:
                     PolygonObject poly = new PolygonObject();
-                    poly.rectangle(pos, e.Location);
+                    poly.rectangle(startPoint, e.Location);
                     poly.setPen(pen);
                     polygonList.Add(poly);
                     break;
@@ -130,12 +140,13 @@ namespace Logger
                     break;
                 case Mode.LINE:
                     PolygonObject polygon = new PolygonObject();
-                    polygon.addPoint(pos);
+                    polygon.addPoint(startPoint);
                     polygon.addPoint(e.Location);
                     polygon.setPen(pen);
                     polygonList.Add(polygon);
                     break;
             }
+            startPoint = Point.Empty;
             Refresh();
         }
 
@@ -151,11 +162,28 @@ namespace Logger
             {
                 Brush brush = new SolidBrush(text.color);
                 g.DrawString(text.text, text.font, (Brush)brush, text.pos);
-
             }
             foreach (PolygonObject polygon in polygonList)
             {
                 g.DrawPolygon(polygon.pen, polygon.list.ToArray());
+            }
+            if (startPoint != Point.Empty && currentPoint != Point.Empty)
+            {
+                switch (mode)
+                {
+                    case Mode.SELECT:
+                        break;
+                    case Mode.DRAW:
+                        PolygonObject poly = new PolygonObject();
+                        poly.rectangle(startPoint, currentPoint);
+                        g.DrawPolygon(pen, poly.list.ToArray());
+                        break;
+                    case Mode.LINE:
+                        g.DrawLine(pen, startPoint, currentPoint);
+                        break;
+                    case Mode.TEXT:
+                        break;
+                }
             }
         }
 
@@ -297,6 +325,15 @@ namespace Logger
         private void lineWdithToolStripMenuItem_Click(object sender, EventArgs e)
         {
             new LineWidth(this).ShowDialog();
+        }
+
+        private void pictureBox_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (startPoint != Point.Empty)
+            {
+                currentPoint = e.Location;
+                Refresh();
+            }
         }
 
     }
