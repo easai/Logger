@@ -17,10 +17,17 @@ namespace Logger
         }
         public void shift(int x, int y)
         {
+            int x0,y0;
             List<Point> l = new List<Point>();
             for (int i = 0; i < list.Count(); i++)
             {
-                l.Add(new Point(list[i].X + x,list[i].Y + y)); 
+                x0=list[i].X;
+                y0 = list[i].Y;
+                if (0 <= x0 + x)
+                    x0 += x;
+                if (0 < y0 + y)
+                    y0 += y;
+                l.Add(new Point(x0,y0)); 
             }
             list = l;
         }

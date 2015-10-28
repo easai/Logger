@@ -104,8 +104,9 @@ namespace Logger
                         GraphicsPath path = new GraphicsPath();
                         path.AddPolygon(polygonList[i].list.ToArray());
                         Region region = new Region(path);
-
-                        if (region.GetBounds(CreateGraphics()).Contains(startPoint))
+                        Graphics g = CreateGraphics();
+                        RectangleF bound=region.GetBounds(g);
+                        if (g!=null && bound!=null && bound.Contains(startPoint))
                         {
                             polygonList[i].shift(e.Location.X - startPoint.X, e.Location.Y - startPoint.Y);
                             moved = true;
@@ -113,14 +114,19 @@ namespace Logger
                     }
                     if (!moved)
                     {
+                        int dx, dy;
                         for (int i = 0; i < textList.Count(); i++)
                         {
                             SizeF sizeF = pictureBox.CreateGraphics().MeasureString(textList[i].text, textList[i].font);
                             Rectangle rb = new Rectangle(textList[i].pos.X, textList[i].pos.Y, (int)sizeF.Width, (int)sizeF.Height);
                             if (rb.Contains(startPoint))
                             {
-                                textList[i].pos.X += e.Location.X - startPoint.X;
-                                textList[i].pos.Y += e.Location.Y - startPoint.Y;
+                                dx = e.Location.X - startPoint.X;
+                                dy=e.Location.Y - startPoint.Y;
+                                if(0<=textList[i].pos.X + dx)
+                                    textList[i].pos.X += dx;
+                                if (0 <= textList[i].pos.Y + dy)
+                                    textList[i].pos.Y += dy;
                             }
                         }
                     }

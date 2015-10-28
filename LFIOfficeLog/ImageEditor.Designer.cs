@@ -53,10 +53,10 @@
             // pictureBox
             // 
             this.pictureBox.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.pictureBox.Dock = System.Windows.Forms.DockStyle.Right;
-            this.pictureBox.Location = new System.Drawing.Point(56, 28);
+            this.pictureBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pictureBox.Location = new System.Drawing.Point(0, 28);
             this.pictureBox.Name = "pictureBox";
-            this.pictureBox.Size = new System.Drawing.Size(994, 635);
+            this.pictureBox.Size = new System.Drawing.Size(1050, 635);
             this.pictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox.TabIndex = 0;
             this.pictureBox.TabStop = false;
@@ -121,34 +121,33 @@
             // fontToolStripMenuItem
             // 
             this.fontToolStripMenuItem.Name = "fontToolStripMenuItem";
-            this.fontToolStripMenuItem.Size = new System.Drawing.Size(152, 24);
+            this.fontToolStripMenuItem.Size = new System.Drawing.Size(146, 24);
             this.fontToolStripMenuItem.Text = "&Font";
             this.fontToolStripMenuItem.Click += new System.EventHandler(this.fontToolStripMenuItem_Click);
             // 
             // fontColorToolStripMenuItem
             // 
             this.fontColorToolStripMenuItem.Name = "fontColorToolStripMenuItem";
-            this.fontColorToolStripMenuItem.Size = new System.Drawing.Size(152, 24);
+            this.fontColorToolStripMenuItem.Size = new System.Drawing.Size(146, 24);
             this.fontColorToolStripMenuItem.Text = "Fon&t color";
             this.fontColorToolStripMenuItem.Click += new System.EventHandler(this.fontColorToolStripMenuItem_Click);
             // 
             // lineWdithToolStripMenuItem
             // 
             this.lineWdithToolStripMenuItem.Name = "lineWdithToolStripMenuItem";
-            this.lineWdithToolStripMenuItem.Size = new System.Drawing.Size(152, 24);
+            this.lineWdithToolStripMenuItem.Size = new System.Drawing.Size(146, 24);
             this.lineWdithToolStripMenuItem.Text = "&Line wdith";
             this.lineWdithToolStripMenuItem.Click += new System.EventHandler(this.lineWdithToolStripMenuItem_Click);
             // 
             // lineColorToolStripMenuItem1
             // 
             this.lineColorToolStripMenuItem1.Name = "lineColorToolStripMenuItem1";
-            this.lineColorToolStripMenuItem1.Size = new System.Drawing.Size(152, 24);
+            this.lineColorToolStripMenuItem1.Size = new System.Drawing.Size(146, 24);
             this.lineColorToolStripMenuItem1.Text = "Line co&lor";
             this.lineColorToolStripMenuItem1.Click += new System.EventHandler(this.lineColorToolStripMenuItem1_Click);
             // 
             // toolStrip
             // 
-            this.toolStrip.Dock = System.Windows.Forms.DockStyle.Left;
             this.toolStrip.ImageScalingSize = new System.Drawing.Size(48, 48);
             this.toolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.selectButton,
@@ -157,7 +156,7 @@
             this.lineButton});
             this.toolStrip.Location = new System.Drawing.Point(0, 28);
             this.toolStrip.Name = "toolStrip";
-            this.toolStrip.Size = new System.Drawing.Size(63, 635);
+            this.toolStrip.Size = new System.Drawing.Size(1050, 65);
             this.toolStrip.TabIndex = 0;
             this.toolStrip.Text = "toolStrip";
             this.toolStrip.UseWaitCursor = true;
@@ -207,7 +206,7 @@
             this.lineButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.lineButton.Name = "lineButton";
             this.lineButton.Padding = new System.Windows.Forms.Padding(5);
-            this.lineButton.Size = new System.Drawing.Size(60, 62);
+            this.lineButton.Size = new System.Drawing.Size(62, 62);
             this.lineButton.Click += new System.EventHandler(this.toolStripButton1_Click);
             // 
             // ImageEditor
