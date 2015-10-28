@@ -210,7 +210,7 @@ namespace Logger
 
             foreach (PolygonObject polygon in polygonList)
             {
-                g.DrawPolygon(polygon.pen, polygon.scale(f));
+                g.DrawPolygon(polygon.pen, polygon.scale(r0, f));
             }
             foreach (TextObject text in textList)
             {

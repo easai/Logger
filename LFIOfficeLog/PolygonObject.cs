@@ -31,13 +31,13 @@ namespace Logger
             }
             list = l;
         }
-        public Point[] scale(float f)
+        public Point[] scale(Point r, float f)
         {
             Point[] p = list.ToArray();
             for (int i = 0; i < p.Length; i++)
             {
-                p[i].X = (int)(p[i].X * f);
-                p[i].Y = (int)(p[i].Y * f);
+                p[i].X = (int)((p[i].X -r.X)* f);
+                p[i].Y = (int)((p[i].Y -r.Y)* f);
             }
             return p;
         }
